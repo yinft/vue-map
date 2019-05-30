@@ -8,7 +8,7 @@
         <!-- <el-amap-marker   :position="marker1.position"  :events="marker1.events" :visible="marker1.visible" :draggable="marker1.draggable" :vid='marker1.vid' ></el-amap-marker> -->
       </el-amap>
 </div>
-
+  <div v-show="show">测试div</div>
   </div>
 
 
@@ -20,6 +20,7 @@
 
 <script>
 import { lazyAMapApiLoaderInstance } from "vue-amap";
+import { WSAESHUTDOWN } from "constants";
 
 export default {
   name: "HelloWorld",
@@ -28,7 +29,9 @@ export default {
   },
 
   data() {
-    return {};
+    return {
+      show: false
+    };
   },
 
   mounted() {
@@ -46,11 +49,16 @@ export default {
       });
 
       // 构造点标记
-      this.marker1 = new AMap.Marker({
+      var marker1 = new AMap.Marker({
         icon:
           "	https://img-1255851908.cos.ap-shanghai.myqcloud.com/lALPDgQ9quAXipM3Nw_55_55.png_620x10000q90g.png",
         position: [119.33252, 32.14781]
       });
+      marker1.on("click", showInfo);
+      function showInfo() {
+        this.show = true;
+        console.log(this.show);
+      }
 
       var marker2 = new AMap.Marker({
         icon:
@@ -82,7 +90,7 @@ export default {
         position: [119.33352, 32.14611]
       });
 
-      this.map.add([this.marker1, marker2, marker3, marker4, marker5, marker6]);
+      this.map.add([marker1, marker2, marker3, marker4, marker5, marker6]);
     });
   }
 };
