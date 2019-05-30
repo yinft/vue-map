@@ -3,9 +3,9 @@
     <h1>{{ msg }}</h1>
 
 <div class="amap-page-container">
-      <el-amap vid="amapDemo" :zoom="zoom" :center="center" class="amap-demo">
+      <el-amap vid="amapDemo"  class="amap-demo">
         
-        <el-amap-marker  :position="marker1.position"  :events="marker1.events" :visible="marker1.visible" :draggable="marker1.draggable" :vid='marker1.vid' ></el-amap-marker>
+        <!-- <el-amap-marker   :position="marker1.position"  :events="marker1.events" :visible="marker1.visible" :draggable="marker1.draggable" :vid='marker1.vid' ></el-amap-marker> -->
       </el-amap>
 </div>
 
@@ -19,93 +19,71 @@
 </template>
 
 <script>
+import { lazyAMapApiLoaderInstance } from "vue-amap";
+
 export default {
   name: "HelloWorld",
   props: {
     msg: String
   },
+
   data() {
-    return {
-      count: 1,
-      slotStyle: {
-        padding: "2px 8px",
-        background: "#eee",
-        color: "#333",
-        border: "1px solid #aaa"
-      },
-      zoom: 17,
-      center: [119.330532, 32.146321],
-      marker1: {
-        vid: "1",
+    return {};
+  },
 
+  mounted() {
+    lazyAMapApiLoaderInstance.load().then(() => {
+      //初始化地图
+      this.map = new AMap.Map("amapDemo", {
+        resizeEnable: true,
+
+        zoom: 17,
+        center: [119.331132, 32.146321],
+        layers: [
+          //使用卫星图层
+          new AMap.TileLayer.Satellite()
+        ]
+      });
+
+      // 构造点标记
+      this.marker1 = new AMap.Marker({
         icon:
-          "https://img-1255851908.cos.ap-shanghai.myqcloud.com/lALPDgQ9quAXipM3Nw_55_55.png_620x10000q90g.png",
-        position: [119.33252, 32.14781],
-        events: {
-          click: () => {
-            alert("click marker1");
-          }
-        },
+          "	https://img-1255851908.cos.ap-shanghai.myqcloud.com/lALPDgQ9quAXipM3Nw_55_55.png_620x10000q90g.png",
+        position: [119.33252, 32.14781]
+      });
 
-        draggable: false,
-        template: "<span>1</span>"
-      },
-      marker2: {
-        position: [119.33392, 32.14801],
-        events: {
-          click: () => {
-            alert("click marker2");
-          }
-        },
-        visible: true,
-        draggable: false,
-        template: "<span>1</span>"
-      },
-      marker3: {
-        position: [119.32812, 32.14571],
-        events: {
-          click: () => {
-            alert("click marker3");
-          }
-        },
-        visible: true,
-        draggable: false,
-        template: "<span>1</span>"
-      },
-      marker4: {
-        position: [119.33152, 32.14581],
-        events: {
-          click: () => {
-            alert("click marker4");
-          }
-        },
-        visible: true,
-        draggable: false,
-        template: "<span>1</span>"
-      },
-      marker5: {
-        position: [119.33252, 32.14601],
-        events: {
-          click: () => {
-            alert("click marker5");
-          }
-        },
-        visible: true,
-        draggable: false,
-        template: "<span>1</span>"
-      },
-      marker6: {
-        position: [119.33352, 32.14611],
-        events: {
-          click: () => {
-            alert("click marker6");
-          }
-        },
-        visible: true,
-        draggable: false,
-        template: "<span>1</span>"
-      }
-    };
+      var marker2 = new AMap.Marker({
+        icon:
+          "	https://img-1255851908.cos.ap-shanghai.myqcloud.com/lALPDgQ9quAXipM3Nw_55_55.png_620x10000q90g.png",
+        position: [119.33392, 32.14801]
+      });
+
+      var marker3 = new AMap.Marker({
+        icon:
+          "	https://img-1255851908.cos.ap-shanghai.myqcloud.com/lALPDgQ9quAXipM3Nw_55_55.png_620x10000q90g.png",
+        position: [119.32812, 32.14571]
+      });
+
+      var marker4 = new AMap.Marker({
+        icon:
+          "	https://img-1255851908.cos.ap-shanghai.myqcloud.com/lALPDgQ9quAV8XU3Nw_55_55.png_620x10000q90g.png",
+        position: [119.33152, 32.14581]
+      });
+
+      var marker5 = new AMap.Marker({
+        icon:
+          "	https://img-1255851908.cos.ap-shanghai.myqcloud.com/lALPDgQ9quAV8XU3Nw_55_55.png_620x10000q90g.png",
+        position: [119.33252, 32.14601]
+      });
+
+      var marker6 = new AMap.Marker({
+        icon:
+          "	https://img-1255851908.cos.ap-shanghai.myqcloud.com/lALPDgQ9quAV8XU3Nw_55_55.png_620x10000q90g.png",
+        position: [119.33352, 32.14611]
+      });
+
+      this.map.add([this.marker1, marker2, marker3, marker4, marker5, marker6]);
+    });
   }
 };
 </script>
@@ -128,6 +106,6 @@ a {
 }
 
 .amap-demo {
-  height: 500px;
+  height: 600px;
 }
 </style>
